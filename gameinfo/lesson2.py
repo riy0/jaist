@@ -1,5 +1,4 @@
 import sys
-import random
 import numpy as np
 from numpy.random import *
 
@@ -9,7 +8,7 @@ ok = 'o '
 out= 'x '
 total = 0
 
-def decide_shortest_point(array,t_point, f_point, x,y):
+def decide_shortest_point(t_point, f_point, x,y):
     min_t = 100000
     min_f = 100000
     for i in range(DATA):
@@ -21,10 +20,9 @@ def decide_shortest_point(array,t_point, f_point, x,y):
             min_f = f
 
     if min_f < min_t:
-        array[x][y] = out
+        return out
     else:
-        array[x][y] = ok
-    return array
+        return  ok
 
 def execute(): 
     #初期化
@@ -42,12 +40,11 @@ def execute():
         array[t_point[i][0]][t_point[i][1]] = '@ '
         array[f_point[i][0]][f_point[i][1]] = 'X '
 
-
     #判定結果が正しいか
     for j in range(SIZE):
         for i in range(SIZE):
             if array[i][j] == '. ':
-                decide_shortest_point(array, t_point, f_point, i,j)
+                array[i][j]= decide_shortest_point(t_point, f_point, i,j)
             if i >= 10:
                 if array[i][j] == out:
                     f_cnt = f_cnt + 1
