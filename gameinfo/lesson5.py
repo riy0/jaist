@@ -57,23 +57,24 @@ def tic_tac_toe():
     win_rate2=0
 
     for i in range(10000):
-        text ="""
-        1|2|3
+        board = """
+        1 2 3
         -----
-        4|5|6
+        4 5 6
         -----
-        7|8|9
+        7 8 9
         """
-        #print(text)
-        coordinate_list = [str(i) for i in range(1, 10)]
         pos = ['1','2','3','4','5','6','7','8','9']
+        coordinate_list = list(pos)
         candidates = [2**i for i in range(9)]
-        turn_user = 0
-        turn_count = 0
-        user1_move = []
-        pos_user_operations = []
+        turn = 0
+        cnt = 0
+        player1_moves = []
+        player2_moves = []
+
         while True:
-            if turn_user == 0:
+            #print(board)
+            if turn == 0:
 
                 #1手目に真ん中を取る場合
                 """
@@ -87,7 +88,7 @@ def tic_tac_toe():
                     udlr = ['2','4','6','8']
                     choice = random.choice(udlr)
                 """
-        
+
                 #1手目に上下左右のどれかを取る場合
                 if len(pos) == 9:
                     corners = ['1','3','7','9']
@@ -96,42 +97,47 @@ def tic_tac_toe():
                 else:
                     choice = random.choice(pos)
                 pos.remove(choice)
-                user1_input = choice
+                player1_input = choice
 
 
-                if user1_input in coordinate_list:
-                    text = text.replace(str(user1_input), "o")
-                    idx = coordinate_list.index(user1_input)
+                if player1_input in coordinate_list:
+                    board = board.replace(str(player1_input), "o")
+                    idx = coordinate_list.index(player1_input)
                     coordinate_list[idx] = "o"
-                    user1_move.append(candidates[idx])
-                    #print(text)
-                    if check_win(user1_move):
+                    player1_moves.append(candidates[idx])
+                    #print(board)
+                    if check_win(player1_moves):
                         win_rate1 += 1
                         break
-                turn_user = 1
-                turn_count +=1
+                turn = 1
+                cnt +=1
 
             else:
                 choice = random.choice(pos)
                 pos.remove(choice)
-                pos_user_input = choice
+                player2_input = choice
 
-                if pos_user_input in coordinate_list:
-                    text = text.replace(str(pos_user_input), "x")
-                    idx = coordinate_list.index(pos_user_input)
+
+                if player2_input in coordinate_list:
+                    board = board.replace(str(player2_input), "x")
+                    idx = coordinate_list.index(player2_input)
                     coordinate_list[idx] = "x"
-                    pos_user_operations.append(candidates[idx]) 
-                    # print(text)
-                    if check_win(pos_user_operations):
+                    player2_moves.append(candidates[idx])
+                    if check_win(player2_moves):
                         win_rate2 += 1
                         break
-                    turn_user = 0
-                    turn_count += 1
+                turn = 0
+                cnt +=1
 
-            if turn_count == 9:
+
+            if cnt == 9:
                 win_rate1 += 0.5
                 win_rate2 += 0.5
                 break
-    return [win_rate1, win_rate2]
 
-print(tic_tac_toe())
+    return [win_rate1, win_rate2]
+if __name__ == '__main__':
+    result =tic_tac_toe()
+    print("win_rate")
+    print("player1: ", result[0]/100, "%")
+    print("player2: ", result[1]/100, "%")
