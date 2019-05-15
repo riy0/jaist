@@ -41,6 +41,7 @@ def decide_shortest_point(x,y,k):
     else:
         array[x][y] = out
 
+
 array = np.full((SIZE, SIZE),'. ')
 k = get_num() 
 

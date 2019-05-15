@@ -8,6 +8,7 @@ ok = 'o '
 out= 'x '
 total = 0
 
+# 正例・負例に近い方を決定し 'x', 'o'を決定
 def decide_shortest_point(t_point, f_point, x,y):
     min_t = 100000
     min_f = 100000
@@ -19,11 +20,12 @@ def decide_shortest_point(t_point, f_point, x,y):
         if f < min_f:
             min_f = f
 
+    # 負例が近ければ'x', 違えば'o'
     if min_f < min_t:
         return out
-    else:
-        return  ok
+    return  ok
 
+# main 
 def execute(): 
     #初期化
     t_point = []
@@ -40,11 +42,13 @@ def execute():
         array[t_point[i][0]][t_point[i][1]] = '@ '
         array[f_point[i][0]][f_point[i][1]] = 'X '
 
-    #判定結果が正しいか
     for j in range(SIZE):
         for i in range(SIZE):
+            #判定
             if array[i][j] == '. ':
                 array[i][j]= decide_shortest_point(t_point, f_point, i,j)
+
+            #正しく判定できる個数をカウント
             if i >= 10:
                 if array[i][j] == out:
                     f_cnt = f_cnt + 1
@@ -52,12 +56,12 @@ def execute():
                 if array[i][j] == ok:
                     t_cnt = t_cnt + 1
             #sys.stdout.write(array[i][j])
-        # print()
+        #print()
     rate = (t_cnt + f_cnt) / 400 *100
-    print(rate)
+    #print('concordance rate:', rate) 
     return rate
 
-a = 0
+# 10回試行し,平均を算出
 for i in range(10):
     total = (execute() + total) 
-print(total/10 , '%')
+print('average of concordance rate, 10 times NN method: ',total/10 , '%')
