@@ -7,34 +7,41 @@ import random
 def choose_point():
     if len(pos) == 9:
         # 初手で真ん中を取る場合
-        choice = '5'
-        """
+        #choice = 5
         # 初手で上下左右のどれかを取る場合
-        udlr = ['2','4','6','8']
+        """
+        udlr = [2,4,6,8]
         choice = random.choice(udlr)
-
         #初手で四隅のどれかを取る場合
-        corners = ['1','3','7','9']
+        corners = [1,3,7,9]
         choice = random.choice(corners) 
         """
+        choice = random.choice(pos)
     else:
         choice = random.choice(pos)
     pos.remove(choice)
-    print(pos)
+    #print(pos)
 
     return choice
 
-# 勝敗を判定
-def check_win(states):
-    coord = [7, 56, 448, 73, 146, 292, 273, 84]
-
-    # 揃ったかどうかを判定
-    judge = sum([int(i) for i in states])
-    print(judge)
-    if judge in coord :
+def check_win(lis):
+    if [1, 2, 3] == list(set([1, 2, 3]) & set(lis)):
+        return True
+    if [4, 5, 6] == list(set([4, 5, 6]) & set(lis)):
+        return True
+    if [7, 8, 9] == list(set([7, 8, 9]) & set(lis)):
+        return True
+    if [1, 4, 7] == list(set([1, 4, 7]) & set(lis)):
+        return True
+    if [2, 5, 8] == list(set([2, 5, 8]) & set(lis)):
+        return True
+    if [3, 6, 9] == list(set([3, 6, 9]) & set(lis)):
+        return True
+    if [1, 5, 9] == list(set([1, 5, 9]) & set(lis)):
+        return True
+    if [3, 5, 7] == list(set([3, 5, 7]) & set(lis)):
         return True
     return False
-
 
 def tic_tac_toe(board):
     win_rate = [0,0]                        # 勝率
@@ -53,36 +60,35 @@ def tic_tac_toe(board):
         # 先手
         if turn == 0:
             board = board.replace(str(player_input), chars[turn])
-            idx = coord_list.index(player_input)
-            coord_list[idx] = chars[turn]
-            player_moves[turn].append(options[idx])
+            #idx = coord_list.index(player_input)
+            #coord_list[idx] = chars[turn]
+            player_moves[turn].append(player_input)
             if check_win(player_moves[turn]):
                 win_rate[turn] += 1
                 print(board)
-                print("win 1")
                 break
             turn = 1
 
         # 後手
         else:
+            #print(turn) 
             board = board.replace(str(player_input), chars[turn])
-            idx = coord_list.index(player_input)
-            coord_list[idx] = chars[turn]
-            player_moves[turn].append(options[idx])
+            #idx = coord_list.index(player_input)
+            #coord_list[idx] = chars[turn]
+            player_moves[turn].append(player_input)
             if check_win(player_moves[turn]):
                 win_rate[turn] += 1
-                print(board)
-                print("win 2")
+                #print(board)
                 break
             turn = 0
 
         cnt +=1
 
-        print(board)
+        #print(board)
         if cnt == 9:
 
             win_rate[0] += 0.5
-            print("draw")
+            #print("draw")
             break
 
     return win_rate[0]
@@ -95,8 +101,8 @@ if __name__ == '__main__':
     """
     total = []
 
-    for i in range(1):
-        pos = ['1','2','3','4','5','6','7','8','9']
+    for i in range(10000):
+        pos = [1,2,3,4,5,6,7,8,9]
         result =tic_tac_toe(board)
         total.append(result) 
 

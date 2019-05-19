@@ -20,7 +20,6 @@ def choose_point():
     else:
         choice = random.choice(pos)
     pos.remove(choice)
-    print(pos)
 
     return choice
 
@@ -30,7 +29,6 @@ def check_win(states):
 
     # 揃ったかどうかを判定
     judge = sum([int(i) for i in states])
-    print(judge)
     if judge in coord :
         return True
     return False
@@ -47,6 +45,7 @@ def tic_tac_toe(board):
     chars = ["o", "x"]                      # 先手，後手
 
     while True:
+        #print(board)
         # 座標を決定
         player_input = choose_point()       
 
@@ -58,8 +57,6 @@ def tic_tac_toe(board):
             player_moves[turn].append(options[idx])
             if check_win(player_moves[turn]):
                 win_rate[turn] += 1
-                print(board)
-                print("win 1")
                 break
             turn = 1
 
@@ -71,18 +68,13 @@ def tic_tac_toe(board):
             player_moves[turn].append(options[idx])
             if check_win(player_moves[turn]):
                 win_rate[turn] += 1
-                print(board)
-                print("win 2")
                 break
             turn = 0
 
         cnt +=1
 
-        print(board)
         if cnt == 9:
-
             win_rate[0] += 0.5
-            print("draw")
             break
 
     return win_rate[0]
@@ -95,7 +87,7 @@ if __name__ == '__main__':
     """
     total = []
 
-    for i in range(1):
+    for i in range(10000):
         pos = ['1','2','3','4','5','6','7','8','9']
         result =tic_tac_toe(board)
         total.append(result) 
