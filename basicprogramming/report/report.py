@@ -1,9 +1,13 @@
+# name: Ryosuke Mishima 
+# id: s1910204 
+# acknowledgements: Seigo Kura
+
+import sys
 from PIL import Image, ImageDraw
 from itertools import groupby
 
 WHITE = (255,255,255)
 
-# W: Workspace
 def find_min(W, dist):
     u = W[0]
     for v in W:
@@ -32,15 +36,6 @@ def dijkstra(A, c, x, y):
     else:
         return None
 
-def check_adjacent():
-    cr, cg, cb, ca = im.getpixel((x+1,y))
-    if (cr, cg, cb) == WHITE:
-        adj.append((x+1, y))
-        adj_cost = tuple(sorted(((x,y),(x+1, y))))
-        if not adj_cost in C.keys():
-            C[adj_cost] = 1
-
-
 def draw_route(route, end_point):
     temp = route[end_point[1]]
     while end_point[0] != route[temp]:
@@ -48,7 +43,8 @@ def draw_route(route, end_point):
         draw.line([adj,temp], fill=(255, 0, 0), width=4)
         temp = adj
 
-im = Image.open("maze.png")
+argv = sys.argv[1]
+im = Image.open(argv)
 draw = ImageDraw.Draw(im)
 
 (width, height) = im.size
@@ -60,10 +56,9 @@ C = {}
 for x in range(0, width):
     for y in range(0, height):
         (r,g,b,a) = im.getpixel((x,y))
-        if (r,g,b) == (255,0,0):
+        if (r,g,b) == (255,0,0) :
             end_point.append((x,y))
-            draw.point((x,y), fill = WHITE) 
-
+            draw.point((x,y), fill = WHITE)
 
 for x in range(0, width):
     for y in range(0, height):
@@ -72,7 +67,7 @@ for x in range(0, width):
         if (r,g,b) == WHITE:
             adj = []
             if x < width - 1:
-                cr, cg, cb, ca = im.getpixel((x+1,y))
+                (cr, cg, cb, ca) = im.getpixel((x+1,y))
                 if (cr, cg, cb) == WHITE:
                     adj.append((x+1, y))
                     adj_cost = tuple(sorted(((x,y),(x+1, y))))
@@ -89,7 +84,7 @@ for x in range(0, width):
 
             if y > 0:
                 cr, cg, cb, ca = im.getpixel((x,y-1))
-                if (cr, cg, cb) == WHITE:
+                if (cr, cg, cb) == WHITE :
                     adj.append((x, y-1))
                     adj_cost = tuple(sorted(((x,y),(x, y-1))))
                     if not adj_cost in C.keys():
@@ -97,7 +92,7 @@ for x in range(0, width):
 
             if y < height - 1:
                 cr, cg, cb, ca = im.getpixel((x,y+1))
-                if (cr, cg, cb) == WHITE:
+                if (cr, cg, cb) == WHITE :
                     adj.append((x, y+1))
                     adj_cost = tuple(sorted(((x,y),(x, y+1))))
                     if not adj_cost in C.keys():
@@ -130,7 +125,7 @@ for x in range(0, width):
 
             if x > 0 and y > 0:
                 cr, cg, cb, ca = im.getpixel((x-1,y-1))
-                if (cr, cg, cb) == WHITE :
+                if (cr, cg, cb) == WHITE:
                     adj.append((x-1, y-1))
                     adj_cost = tuple(sorted(((x,y),(x-1, y-1))))
                     if not adj_cost in C.keys():
@@ -138,8 +133,6 @@ for x in range(0, width):
 
             L[(x,y)]= adj
 
-route= dijkstra(L, lambda x,y:C[(x,y)], end_point[0], end_point[1])
-
-draw_route(route, end_point)
+draw_route(dijkstra(L, lambda x,y:C[(x,y)], end_point[0], end_point[1]), end_point)
 
 im.save("a.png")
